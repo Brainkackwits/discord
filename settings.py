@@ -1,6 +1,6 @@
 import os
 import discord
-Token = "MjQxODExODI3MDY1ODgwNTc3.WBRC0A.yQol8DWZgVfdP6SNTvYpgz-t3cg"
+Token = "MjQxODExODI3MDY1ODgwNTc3.WBRC0A.P5bQrUGeoUlaPW3smZTCJ6Zyke8"
 PREFIX = "*"
 botdescription = "*help"
 autorole = ""

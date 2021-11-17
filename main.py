@@ -7,8 +7,8 @@ import time
 """magische miesmuschel"""
 """abstimmungen"""
 """gummizelle"""
-from functions import permission, discord_library
-from commands import help,permissions,dm_chat,clear,dice,music,meme
+from functions import permission, discord_library,music
+from commands import help,permissions,dm_chat,clear,musik,dice,meme
 client = discord.Client()
 #
 commands = {
@@ -16,6 +16,7 @@ commands = {
 "permission":permissions,
 "clear":clear,
 "meme":meme,
+
 }
 serverdeletelist = []
 @client.event
@@ -42,47 +43,28 @@ async def on_message(message):
     msg = message.content
     dm = discord_library.dm_channel(message)
 
+    global stats
+
     clientprotokoll = client.voice_clients
     if dm.is_dm_channel(message):
         dm_chat.ex(client,message)
     if msg.startswith(settings.PREFIX):
-        global v
-        try:#dice&musik
-            args = message.content.split
-
-            if msg[1:5]=="join":
-                try:
-                    await v.join()
-                except:
-                    v = music.music(client,message)
-                    await v.join()
-            elif msg[1:5]=="play":
-                if args(" ")[1:]:
-                    try:
-                        await v.play(args(" ")[1:])
-                    except:
-                        #v = music.music(client,message)
-                        await v.play(args(" ")[1:])
-                else:
-                    await channel.send(embed=discord.Embed(color=discord.Color.red(), description=(
-                            "*play title")))
-            elif msg[1:6]=="leave":
-                await v.leave()
-            elif msg[1:5]=="stop":
-                await v.stop()
-
-
-            elif int(message.content[1:2]):
+        try:#dice
+            if int(message.content[1:2]):
                     await dice.start(client,message)
+        except:
+            try:#musik
+                invoke = msg[len(settings.PREFIX):].split(" ")[0]
+                args = msg.split(" ")[1:]
+                await musik.ex(args,message,client,invoke)
 
-        except ValueError:
-            invoke = msg[len(settings.PREFIX):].split(" ")[0]
-            args = msg.split(" ")[1:]
-            #print("error "+str(IOError))
-            if commands.__contains__(invoke):
-                await commands.get(invoke).ex(args,message,client,invoke)
-            else:#class error
-                await channel.send(embed=discord.Embed(color=discord.Color.red(), description=(
-                        "The command `%s` is not valid!" % invoke)))
+            except ValueError:
+
+                #print("error "+str(IOError))
+                if commands.__contains__(invoke):
+                    await commands.get(invoke).ex(args,message,client,invoke)
+                else:#class error
+                    await channel.send(embed=discord.Embed(color=discord.Color.red(), description=(
+                            "The command `%s` is not valid!" % invoke)))
 
 client.run(settings.Token)
