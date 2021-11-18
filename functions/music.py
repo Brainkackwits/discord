@@ -1,5 +1,7 @@
 import discord
 import asyncio
+import glob
+import settings
 class playlist:
     def __init__(self):
         pass
@@ -8,6 +10,8 @@ class stats:
     queue = []
     index = 0
     run = True
+    playlistfiles = glob.glob(settings.path+"musik\\playlist\\*.mp3")
+    queuelistfiles = glob.glob(settings.path+"musik\\queue\\*.mp3")
     def voice(client):
         index = 1
         return discord.utils.get(client.voice_clients, guild=client.guilds[index])

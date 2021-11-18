@@ -14,7 +14,7 @@ async def ex(args,message,client,invoke):
             if len(args[0]) >= 2:
 
                 await music.join(args,message,client,invoke,music.stats.voice(client))
-                queue,index = await downtube.downtube(args[0]).downloader()
+                await downtube.downtube(args[0]).downloader()
 
                 if music.stats.voice(client).is_playing():
                     await music.move(voice,message)
@@ -58,8 +58,11 @@ async def ex(args,message,client,invoke):
                 index = 10
             else:
                 index = len(music.stats.queue)
-            await message.channel.send(embed=discord.Embed(color=discord.Color.red(),description=("playing... "+str(music.stats.queue[music.stats.index-1])[12:-4])))
-            await message.channel.send(embed=discord.Embed(color=discord.Color.blue(),description=(str([x[12:-4] for x in music.stats.queue[music.stats.index-2:index]])[2:-2].replace("', '","\n"))))
+            #print()#
+            print(str([x[len(settings.path)+13:-4] for x in music.stats.queue[music.stats.index-2:index]])[2:-2].replace("', '","\n"))
+            await message.channel.send(embed=discord.Embed(color=discord.Color.red(),description=("playing... "+str(music.stats.queue[music.stats.index-1])[len(settings.path)+13:-4])))
+            await message.channel.send(embed=discord.Embed(color=discord.Color.red(),description=(str([x[len(settings.path)+13:-4] for x in music.stats.queue[music.stats.index-2:index]])[2:-2].replace("', '","\n"))))
+
         if message.content.startswith(settings.PREFIX+"stop") or message.content.startswith(settings.PREFIX+"Stop"):
             music.stats.run = False
             music.stats.voice(client).stop()
@@ -71,4 +74,6 @@ def autoplay(args,message,client,invoke,voice):
         if len(music.stats.queue) >= 1 and len(music.stats.queue) >= music.stats.index:
             if not music.stats.voice(client).is_playing():
                 music.stats.voice(client).play(discord.FFmpegPCMAudio(executable=settings.path+"\\ffmpeg.exe",source=(music.stats.queue[music.stats.index])))
-                music.stats.index = music.stats.index+1
+                try:
+                    music.stats.index = music.stats.index+1
+                except:pass
