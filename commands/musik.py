@@ -11,21 +11,30 @@ async def ex(args,message,client,invoke):
     if permission.check(message,2):
 
         if message.content.startswith(settings.PREFIX+"play") or message.content.startswith(settings.PREFIX+"Play"):
-            if len(args[0]) >= 2:
+            try:
+                 if args[0].startswith("*"):
+                     print("add")#add name of playlist
+            except:pass
 
-                await music.join(args,message,client,invoke,music.stats.voice(client))
-                await downtube.downtube(args[0]).downloader()
+            try:
+                if len(args[0]) >= 2:
 
-                if music.stats.voice(client).is_playing():
-                    await music.move(voice,message)
+                    await music.join(args,message,client,invoke,music.stats.voice(client))
+                    await downtube.downtube(args[0]).downloader()
+
+                    if music.stats.voice(client).is_playing():
+                        await music.move(voice,message)
+                    else:
+                        #thread autoplay
+                        auto.start()
+                        #music.stats.voice(client).play(discord.FFmpegPCMAudio(executable=settings.path+"\\ffmpeg.exe",source=(queue[index])))
+
                 else:
-                    #thread autoplay
-                    auto.start()
-                    #music.stats.voice(client).play(discord.FFmpegPCMAudio(executable=settings.path+"\\ffmpeg.exe",source=(queue[index])))
-
-            else:
+                    await message.channel.send(embed=discord.Embed(color=discord.Color.red(), description=(
+                        "*play song")))
+            except:
                 await message.channel.send(embed=discord.Embed(color=discord.Color.red(), description=(
-                    "*play song")))
+                    "*play song\n*play *playlistname")))
         if message.content.startswith(settings.PREFIX+"join") or message.content.startswith(settings.PREFIX+"Join"):
             await music.join(args,message,client,invoke,voice)
         if message.content.startswith(settings.PREFIX+"skip") or message.content.startswith(settings.PREFIX+"Skip"):
@@ -59,7 +68,7 @@ async def ex(args,message,client,invoke):
             else:
                 index = len(music.stats.queue)
             #print()#
-            print(str([x[len(settings.path)+13:-4] for x in music.stats.queue[music.stats.index-2:index]])[2:-2].replace("', '","\n"))
+            #print(str([x[len(settings.path)+13:-4] for x in music.stats.queue[music.stats.index-2:index]])[2:-2].replace("', '","\n"))
             await message.channel.send(embed=discord.Embed(color=discord.Color.red(),description=("playing... "+str(music.stats.queue[music.stats.index-1])[len(settings.path)+13:-4])))
             await message.channel.send(embed=discord.Embed(color=discord.Color.red(),description=(str([x[len(settings.path)+13:-4] for x in music.stats.queue[music.stats.index-2:index]])[2:-2].replace("', '","\n"))))
 
@@ -68,6 +77,7 @@ async def ex(args,message,client,invoke):
             music.stats.voice(client).stop()
         if message.content.startswith(settings.PREFIX+"add"):
             print("add")#add name of playlist
+        
 def autoplay(args,message,client,invoke,voice):
     while music.stats.run:
         time.sleep(1)

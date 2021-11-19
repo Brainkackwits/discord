@@ -11,7 +11,7 @@ import threading
 from functions import music
 import settings
 class downtube:
-    def __init__(self,file,save="musik\\queue"):
+    def __init__(self,file,save="musik\\storage"):
         self.file = file
         self.filename = []
         self.save = save
@@ -19,7 +19,7 @@ class downtube:
         self.index = music.stats.index
         self.i = 0
         self.down = []
-        self.queuelist = glob.glob(settings.path+"musik\\queue\\*.mp3")
+        self.queuelist = glob.glob(settings.path+"musik\\storage\\*.mp3")
 
         self.playlistfiles = music.stats.playlistfiles
     async def downloader(self):
@@ -33,7 +33,7 @@ class downtube:
                 self.down[raw].start()
                 try:
                     self.down[len(myfile.videos)].join()
-                    music.stats.queuelistfiles = glob.glob(settings.path+"musik\\queue\\*.mp3")
+                    music.stats.queuelistfiles = glob.glob(settings.path+"musik\\storage\\*.mp3")
                 except:pass
             self.down[1].join()
         except:
@@ -44,7 +44,7 @@ class downtube:
                 music.stats.queue.append(filename)
                 #self.convert(len(self.filename)-1)
             else:
-                music.stats.queue.append(settings.path+"musik\\queue\\"+myfile.title+".mp3")
+                music.stats.queue.append(settings.path+"musik\\storage\\"+myfile.title+".mp3")
         #self.queue.extend([x[:-5]+".mp3" for x in self.filename])
         #print(self.queue,self.index)
 

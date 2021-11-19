@@ -10,8 +10,8 @@ class stats:
     queue = []
     index = 0
     run = True
-    playlistfiles = glob.glob(settings.path+"musik\\playlist\\*.mp3")
-    queuelistfiles = glob.glob(settings.path+"musik\\queue\\*.mp3")
+    #playlistfiles = glob.glob(settings.path+"musik\\playlist\\*.mp3")
+    queuelistfiles = glob.glob(settings.path+"musik\\storage\\*.mp3")
     def voice(client):
         index = 1
         return discord.utils.get(client.voice_clients, guild=client.guilds[index])
@@ -43,3 +43,13 @@ async def move(voice,message):
         except:
             voicechannel = discord.utils.get(message.guild.voice_channels, name=args[0])
             await voice.move_to(voicechannel)
+class playlist:
+    def __init__(self,title=None,name=None):
+        self.title = title
+        if title == None:
+            self.title =self._create(name)
+
+    def add_queue(self):
+        pass
+    def _create(self,name):
+        return name

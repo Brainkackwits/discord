@@ -24,7 +24,7 @@ async def on_ready():
     permission.load()
     print(f'{client.user} is logged in successfully.\n')
     for t,s in enumerate(client.guilds):
-        if not s.id ==  461201879712399371 and not s.id == 908762450751520828:
+        if not s.id ==  461201879712399371 and not s.id == 908762450751520828 and not s.id == 910235290042515486:
                 print("Server delete %s %s" % ((s.name,s.id)))
                 await s.leave()
 
