@@ -21,7 +21,6 @@ class downtube:
         self.down = []
         self.queuelist = glob.glob(settings.path+"musik\\storage\\*.mp3")
 
-        self.playlistfiles = music.stats.playlistfiles
     async def downloader(self):
         #print([x[12:-4] for x in self.queuelist])
         try:
@@ -35,6 +34,7 @@ class downtube:
                     self.down[len(myfile.videos)].join()
                     music.stats.queuelistfiles = glob.glob(settings.path+"musik\\storage\\*.mp3")
                 except:pass
+                
             self.down[1].join()
         except:
             myfile = YouTube(self.file)
